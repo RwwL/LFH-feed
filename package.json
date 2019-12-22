@@ -4,7 +4,7 @@
   "description": "Generate a podcast feed for full Live From Here episodes.",
   "main": "index.js",
   "author": "Rob Lifford",
-  "license": "WTFPL",
+  "license": "MIT",
   "devDependencies": {},
   "dependencies": {
     "podcast": "^1.1.0",
