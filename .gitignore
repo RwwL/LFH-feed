@@ -5,6 +5,6 @@ cronjob.sh
 feed.xml
 config.json
 lfh-feed.log.bak
-# episodes.json
-# lfh-feed.log
+episodes.json
+lfh-feed.log
 test-ftp.js
