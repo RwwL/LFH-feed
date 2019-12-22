@@ -1,0 +1,15 @@
+{
+  "name": "lfh-feed",
+  "version": "1.0.0",
+  "description": "Generate a podcast feed for full Live From Here episodes.",
+  "main": "index.js",
+  "author": "Rob Lifford",
+  "license": "WTFPL",
+  "devDependencies": {},
+  "dependencies": {
+    "podcast": "^1.1.0",
+    "puppeteer": "^1.11.0",
+    "sftp-promises": "^1.6.0",
+    "simple-node-logger": "^18.12.21"
+  }
+}
