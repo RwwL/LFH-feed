@@ -1,5 +1,5 @@
 # LFH-feed
-Generate a self-hosted full-episodes RSS feed for APM's Live From Here
+Generate a self-hosted full-episodes RSS feed for APM's Live From Here.
 
 The Live from Here radio program distributes only curated highlights in their official podcast feed, but full episodes are hosted on their website. This is a simple script to periodically scrape the site (using [Puppeteer](https://developers.google.com/web/tools/puppeteer)) and generate a full-episodes RSS feed that you can subscribe and listen from your preferred podcast client instead of on the website.
 
