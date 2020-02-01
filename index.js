@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
-const CONFIG = JSON.parse(fs.readFileSync('./config.json', 'utf8'));
+const CONFIG_PATH = path.resolve(path.join(__dirname, 'config.json'));
+const CONFIG = JSON.parse(fs.readFileSync(CONFIG_PATH, 'utf8'));
 const LOG_PATH = path.resolve(path.join(__dirname, 'lfh-feed.log'));
 const JSON_PATH = path.resolve(path.join(__dirname, 'episodes.json'));
 const FEED_PATH = path.resolve(path.join(__dirname, 'feed.xml'));
