@@ -118,12 +118,12 @@ const registerEpisode = (episodeData) => {
 // fetch the page with puppeteer and get latest show data
 (async () => {
   const browser = await puppeteer.launch();
-  const page = await browser.newPage().catch((error) => handleError(error));
-  await page.goto(TARGET_URL).catch((error) => handleError(error));
+  const page = await browser.newPage().catch(handleError);
+  await page.goto(TARGET_URL).catch(handleError);
   const showData = await page.evaluate(() => ({
     url: document.querySelector('#player').getAttribute('data-src'),
     title: document.querySelector('.player_title').innerText,
-  })).catch((error) => handleError(`puppeteer promise rejected: ${error}`));
+  })).catch(handleError);
   registerEpisode(showData);
   await browser.close();
 })();
