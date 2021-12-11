@@ -5,11 +5,15 @@
   "main": "index.js",
   "author": "Rob Lifford",
   "license": "MIT",
-  "devDependencies": {},
+  "devDependencies": {
+    "eslint": "^8.4.1",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.25.3"
+  },
   "dependencies": {
-    "podcast": "^1.1.0",
-    "puppeteer": "^1.11.0",
-    "sftp-promises": "^1.6.0",
-    "simple-node-logger": "^18.12.21"
+    "podcast": "^2.0.0",
+    "puppeteer": "^13.0.0",
+    "sftp-promises": "^1.8.0",
+    "simple-node-logger": "^21.8.12"
   }
 }
