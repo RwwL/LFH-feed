@@ -23,12 +23,15 @@ const handleError = (error) => {
   log.info(`${date}: ${error}`);
 };
 
-const uploadPodcast = () => {
+const uploadPodcast = async () => {
   const sftp = new SFTPClient(FTP_CONFIG);
-  sftp.put(FEED_PATH, CONFIG.FTP_FEED_PATH).then((success) => {
+  try {
+    const success = await sftp.put(FEED_PATH, CONFIG.FTP_FEED_PATH);
     const loggingDate = new Date().toLocaleDateString();
     log.info(`${loggingDate}: attempted upload, success: ${success}`);
-  }).catch((err) => { handleError(err); });
+  } catch (err) {
+    handleError(err);
+  }
 };
 
 const createPodcast = (episodes) => {
@@ -68,7 +71,7 @@ const createPodcast = (episodes) => {
   });
 };
 
-const registerEpisode = (episodeData) => {
+const registerEpisode = async (episodeData) => {
   const data = { ...episodeData };
   const { url, title } = data;
   if (!url || !title) {
@@ -80,37 +83,31 @@ const registerEpisode = (episodeData) => {
   data.date = `${episodeDateString.slice(0, 4)}.${episodeDateString.slice(4, 6)}.${episodeDateString.slice(6, 8)}`;
   data.title = `${data.date}: ${title}`;
   log.info(`${loggingDate}: found episode '${data.title}'`);
-  fs.exists(JSON_PATH, (exists) => {
-    if (exists) {
-      fs.readFile(JSON_PATH, (err, episodesJSON) => {
-        if (err) {
-          handleError(err);
-        } else {
-          const episodesObj = JSON.parse(episodesJSON);
-          if (Array.isArray(episodesObj.episodes)) {
-            const existing = episodesObj.episodes.find((episode) => episode.date === data.date);
-            if (existing) {
-              log.info(`found preexisting episode (for ${data.date}) in list; quitting`);
-            } else {
-              episodesObj.episodes.push(data);
-              if (episodesObj.episodes.length >= 10) {
-                episodesObj.episodes.splice(0, 1);
-              }
-              fs.writeFile(JSON_PATH, JSON.stringify(episodesObj, null, 2), (err2) => {
-                if (err2) {
-                  handleError(err2);
-                } else {
-                  createPodcast(episodesObj.episodes);
-                }
-              });
-            }
-          } else {
-            handleError('invalid episodes.json file');
-          }
-        }
-      });
+  fs.readFile(JSON_PATH, (err, episodesJSON) => {
+    if (err) {
+      handleError(err);
     } else {
-      handleError('no episodes.json');
+      const episodesObj = JSON.parse(episodesJSON);
+      if (Array.isArray(episodesObj.episodes)) {
+        const existing = episodesObj.episodes.find((episode) => episode.date === data.date);
+        if (existing) {
+          log.info(`found preexisting episode (for ${data.date}) in list; quitting`);
+        } else {
+          episodesObj.episodes.push(data);
+          if (episodesObj.episodes.length >= 10) {
+            episodesObj.episodes.splice(0, 1);
+          }
+          fs.writeFile(JSON_PATH, JSON.stringify(episodesObj, null, 2), (err2) => {
+            if (err2) {
+              handleError(err2);
+            } else {
+              createPodcast(episodesObj.episodes);
+            }
+          });
+        }
+      } else {
+        handleError('invalid episodes.json file');
+      }
     }
   });
 };
