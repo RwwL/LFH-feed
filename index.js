@@ -69,13 +69,16 @@ const createPodcast = (episodes) => {
 };
 
 const registerEpisode = (episodeData) => {
-  const data = episodeData;
+  const data = { ...episodeData };
+  const { url, title } = data;
+  if (!url || !title) {
+    handleError('failed to get episode data');
+    return;
+  }
+  const episodeDateString = url.split('lfh_')[1].split('.')[0];
   const loggingDate = new Date().toLocaleDateString();
-  const episodeDateArray = data.url.split('lfh_')[1].split('.')[0].split('');
-  episodeDateArray.splice(4, 0, '.');
-  episodeDateArray.splice(7, 0, '.');
-  data.date = episodeDateArray.join('');
-  data.title = `${data.date}: ${data.title}`;
+  data.date = `${episodeDateString.slice(0, 4)}.${episodeDateString.slice(4, 6)}.${episodeDateString.slice(6, 8)}`;
+  data.title = `${data.date}: ${title}`;
   log.info(`${loggingDate}: found episode '${data.title}'`);
   fs.exists(JSON_PATH, (exists) => {
     if (exists) {
